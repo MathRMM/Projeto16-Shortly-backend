@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 
-import { createNewUrl, deleteUrl, selectUrlById, selectUrlByShort } from '../database/dataService.js';
+import { createNewUrl, deleteUrl, selectUrlById, selectUrlByShort } from '../repositories/repositories.js';
 
 async function createNewUrlController(req, res) {
     const url = res.locals.url

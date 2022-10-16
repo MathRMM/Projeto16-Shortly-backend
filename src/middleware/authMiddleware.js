@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-import {selectSession} from '../database/dataService.js'
+import {selectSession} from '../repositories/repositories.js'
 
 function signUpMiddleware(req, res, next) {
     const { name, email, password, confirmPassword } = req.body

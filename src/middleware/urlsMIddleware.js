@@ -1,4 +1,4 @@
-import {selectCustomerByUrlId} from '../database/dataService.js'
+import {selectCustomerByUrlId} from '../repositories/repositories.js'
 
 
 function createNewUrlMiddleware(req, res, next){

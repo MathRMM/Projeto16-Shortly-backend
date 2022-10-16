@@ -1,4 +1,4 @@
-import {selectRanking, selectVisitsUrls} from '../database/dataService.js'
+import {selectRanking, selectVisitsUrls} from '../repositories/repositories.js'
 
 async function usersProperty(req, res){
     const customer = res.locals.customer

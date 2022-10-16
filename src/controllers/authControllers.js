@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import {v4 as uuid} from 'uuid'
 
-import { createNewCustomer, selectCustomer, createNewSession } from '../database/dataService.js';
+import { createNewCustomer, selectCustomer, createNewSession } from '../repositories/repositories.js';
 
 async function signUpController(req, res) {
     const customer = res.locals.customer
