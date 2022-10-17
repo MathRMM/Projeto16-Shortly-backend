@@ -39,4 +39,8 @@ const tokenSchema = joi.object({
         .label("Token invalido"),
 });
 
-export { signUpSchemas, signInSchemas, newUrlSchema, tokenSchema };
+const urlIdSchema = joi.object({
+    id: joi.number().label("O id deve ser um numero"),
+});
+
+export { signUpSchemas, signInSchemas, newUrlSchema, tokenSchema, urlIdSchema };

@@ -1,7 +1,7 @@
 import express from "express";
 
 import { authToken } from "../middleware/authMiddleware.js";
-import { createNewUrlMiddleware, deleteUrlMiddleware } from "../middleware/urlsMIddleware.js";
+import { createNewUrlMiddleware, deleteUrlMiddleware, selectUrlByIdMiddleware } from "../middleware/urlsMIddleware.js";
 import {
     createNewUrlController,
     selectUrlByIdController,
@@ -17,7 +17,7 @@ router.post(
     createNewUrlMiddleware,
     createNewUrlController
 );
-router.get("/urls/:id", selectUrlByIdController);
+router.get("/urls/:id", selectUrlByIdMiddleware, selectUrlByIdController);
 
 router.get("/urls/open/:shortUrl", selectUrlByShortController);
 
