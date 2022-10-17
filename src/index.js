@@ -9,6 +9,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+const PORT = process.env.PORT || 4000
+
 app.use(authRoutes, urlsRoutes, usersRouter);
 
-app.listen(5000, console.log('listen on port 5000'));
+app.listen(PORT, console.log(`listen on port ${PORT}`));

@@ -1,10 +1,11 @@
 import {connection} from '../database/db.js'
 
-async function createNewCustomer({ name, email, password }) {
+async function createNewCustomer({ name, email, hashPassword }) {
+    console.log(typeof hashPassword)
     return await connection.query(`
-        INSERT INTO customers (name, email, password)
+        INSERT INTO customers (name, email, "hashPassword")
         VALUES ($1, $2, $3);
-    `, [name, email, password]);
+    `, [name, email, hashPassword]);
 }
 
 async function selectCustomer(email) {
@@ -15,11 +16,11 @@ async function selectCustomer(email) {
     `, [email])).rows;
 }
 
-async function createNewSession({ customerId, token, lastStatus }) {
+async function createNewSession({ customerId, token }) {
     return (await connection.query(`
-        INSERT INTO sessions (customer_id, token, last_status)
-        VALUES ($1, $2, $3);
-    `, [customerId, token, lastStatus])).rows;
+        INSERT INTO sessions (customer_id, token)
+        VALUES ($1, $2);
+    `, [customerId, token])).rows;
 }
 
 async function selectSession(token) {
@@ -82,14 +83,14 @@ async function selectVisitsUrls(customerId){
     return (await connection.query(`
         SELECT 
             COUNT(url_hit_count.id) AS "visitCount",
-            url_hit_count.url_id,
+            urls.id,
             urls.url,
             urls.short_url AS "shortUrl"
-        FROM url_hit_count
-        JOIN urls ON urls.id = url_hit_count.url_id
+        FROM urls 
+        LEFT JOIN url_hit_count ON url_hit_count.url_id = urls.id
         WHERE urls.customer_id = $1
         GROUP BY 
-            url_hit_count.url_id, 
+            urls.id,
             urls.url, 
             urls.short_url;
     `,[customerId])).rows;

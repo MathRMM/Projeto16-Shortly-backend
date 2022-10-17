@@ -1,9 +1,23 @@
 import {selectCustomerByUrlId} from '../repositories/repositories.js'
+import * as schemas from "./helpers/joiSchemas.js";
 
 
 function createNewUrlMiddleware(req, res, next){
     const url = req.body.url
-    if(!url) return res.sendStatus(422);
+    
+    const validation = schemas.newUrlSchema.validate(
+        {
+            url,
+        },
+        { abortEarly: false }
+    );
+
+    if (validation.error) {
+        const errors = validation.error.details.map(
+            (detail) => detail?.context?.label
+        );
+        return res.status(422).send({ message: errors });
+    }
 
     res.locals.url = url
     next();

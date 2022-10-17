@@ -1,47 +1,90 @@
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
-import {selectSession} from '../repositories/repositories.js'
+import { selectSession } from "../repositories/repositories.js";
+import * as schemas from "./helpers/joiSchemas.js";
 
 function signUpMiddleware(req, res, next) {
-    const { name, email, password, confirmPassword } = req.body
-    if (!name, !email, !password, !confirmPassword) return res.sendStatus(422);
+    const { name, email, password, confirmPassword } = req.body;
 
-    if (password !== confirmPassword) return res.status(422).send({ message: 'Senha e Confirme Senha estão diferentes' })
+    const validation = schemas.signUpSchemas.validate(
+        {
+            name,
+            email,
+            password,
+            confirmPassword,
+        },
+        { abortEarly: false }
+    );
+
+    if (validation.error) {
+        const errors = validation.error.details.map(
+            (detail) => detail?.context?.label
+        );
+        return res.status(422).send({ message: errors });
+    }
+
     const hashPassword = bcrypt.hashSync(password, Number(process.env.SALT));
+
     res.locals.customer = {
         name,
         email,
         hashPassword,
-    }
-    next()
+    };
+    next();
 }
 
 function signInMiddleware(req, res, next) {
-    const { email, password } = req.body
-    if (!email, !password) return res.sendStatus(422);
+    const { email, password } = req.body;
+
+    const validation = schemas.signInSchemas.validate(
+        {
+            email,
+            password,
+        },
+        { abortEarly: false }
+    );
+
+    if (validation.error) {
+        const errors = validation.error.details.map(
+            (detail) => detail?.context?.label
+        );
+        return res.status(422).send({ message: errors });
+    }
+
     res.locals.customer = {
         email,
-        password
-    }
-    next()
+        password,
+    };
+    next();
 }
 
-async function  authToken(req, res, next){
-    const { authorization } = req.headers
-    if(!authorization) return res.sendStatus(401)
+async function authToken(req, res, next) {
+    const { authorization } = req.headers;
+    if (!authorization) return res.sendStatus(401);
+    const token = authorization.replace("Bearer ", "");
+
+    const validation = schemas.tokenSchema.validate(
+        {
+            token,
+        },
+        { abortEarly: false }
+    );
+
+    if (validation.error) {
+        const errors = validation.error.details.map(
+            (detail) => detail?.context?.label
+        );
+        return res.status(422).send({ message: errors });
+    }
 
     try {
-        const customer = await selectSession(authorization.replace('Bearer ', ''))
-        if(!customer[0]) return res.sendStatus(401)
-        res.locals.customer = customer[0]
-        next()
+        const customer = await selectSession(token);
+        if (!customer[0]) return res.sendStatus(401);
+        res.locals.customer = customer[0];
+        next();
     } catch (error) {
-        res.sendStatus(500)
+        res.sendStatus(500);
     }
 }
 
-export { 
-    signUpMiddleware,
-    signInMiddleware,
-    authToken
-}
+export { signUpMiddleware, signInMiddleware, authToken };

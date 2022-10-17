@@ -18,7 +18,12 @@ router.post(
     createNewUrlController
 );
 router.get("/urls/:id", selectUrlByIdController);
+
 router.get("/urls/open/:shortUrl", selectUrlByShortController);
-router.delete("/urls/:id", authToken, deleteUrlMiddleware, deleteUrlController);
+
+router.delete("/urls/:id", 
+authToken, 
+deleteUrlMiddleware, 
+deleteUrlController);
 
 export default router;

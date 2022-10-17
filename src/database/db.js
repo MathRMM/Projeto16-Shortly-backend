@@ -1,15 +1,15 @@
-import psql from 'pg'
-import dotenv from 'dotenv'
+import psql from "pg";
+import dotenv from "dotenv";
 dotenv.config();
 
 const { Pool } = psql;
 
 const connection = new Pool({
-    user: 'postgres',
+    user: process.env.DB_USER,
     password: process.env.PASSWORD_PG,
-    host: 'localhost',
-    port: 5432,
-    database: process.env.DATABASE
-})
+    host: process.env.DATABASE_URL,
+    port: process.env.DB_PORT,
+    database: process.env.DATABASE,
+});
 
-export {connection};
+export { connection };
