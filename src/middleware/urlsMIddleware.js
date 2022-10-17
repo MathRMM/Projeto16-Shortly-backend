@@ -43,7 +43,7 @@ async function deleteUrlMiddleware(req, res, next) {
     }
 
     try {
-        const urlCustomerId = await selectCustomerByUrlId(urlId);
+        const urlCustomerId = await selectCustomerByUrlId(id);
         if(!urlCustomerId[0]) return res.sendStatus(404);
         if(customer.id !== urlCustomerId[0].id) return res.sendStatus(401);
         res.locals.urlId = id

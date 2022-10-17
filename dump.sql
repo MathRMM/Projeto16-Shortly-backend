@@ -91,7 +91,7 @@ ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 
 CREATE TABLE public.url_hit_count (
     id integer NOT NULL,
-    url_id integer NOT NULL
+    url_id integer
 );
 
 
@@ -187,23 +187,25 @@ INSERT INTO public.customers VALUES (15, 'Irmao do Jorel', 'steeve@magal.com', '
 -- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.sessions VALUES (6, '7bef5871-a7db-4d1f-9906-2af142e39195', 15, '2022-10-16 20:45:54.97222');
-INSERT INTO public.sessions VALUES (7, '884b7cd6-e2d9-45c5-a16f-f902fd2d5a44', 15, '2022-10-16 22:07:12.092064');
+INSERT INTO public.sessions VALUES (8, '923c0b32-058d-44bc-b986-2abff4762a8a', 15, '2022-10-17 13:08:01.771011');
 
 
 --
 -- Data for Name: url_hit_count; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.url_hit_count VALUES (17, 9);
-INSERT INTO public.url_hit_count VALUES (18, 10);
+INSERT INTO public.url_hit_count VALUES (21, 10);
+INSERT INTO public.url_hit_count VALUES (22, 10);
+INSERT INTO public.url_hit_count VALUES (23, 10);
+INSERT INTO public.url_hit_count VALUES (25, 10);
+INSERT INTO public.url_hit_count VALUES (26, 10);
+INSERT INTO public.url_hit_count VALUES (27, 10);
 
 
 --
 -- Data for Name: urls; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.urls VALUES (9, 15, 'https://bootcampra.notion.site/Projeto-Shortly-API-21533489cd5042058524caf3429b62e4', 'HMowGW8HZTPWFBpyv8y_l', '2022-10-16 20:47:32.810469');
 INSERT INTO public.urls VALUES (10, 15, 'https://www.youtube.com/watch?v=fgdMGR2DZHY', 'UjPsVjtHqlvNyEkgcTfuA', '2022-10-16 21:03:37.617033');
 
 
@@ -218,14 +220,14 @@ SELECT pg_catalog.setval('public.customers_id_seq', 15, true);
 -- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.sessions_id_seq', 7, true);
+SELECT pg_catalog.setval('public.sessions_id_seq', 8, true);
 
 
 --
 -- Name: url_hit_count_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.url_hit_count_id_seq', 18, true);
+SELECT pg_catalog.setval('public.url_hit_count_id_seq', 27, true);
 
 
 --
@@ -304,7 +306,7 @@ ALTER TABLE ONLY public.sessions
 --
 
 ALTER TABLE ONLY public.url_hit_count
-    ADD CONSTRAINT url_hit_count_url_id_fkey FOREIGN KEY (url_id) REFERENCES public.urls(id);
+    ADD CONSTRAINT url_hit_count_url_id_fkey FOREIGN KEY (url_id) REFERENCES public.urls(id) ON DELETE CASCADE;
 
 
 --

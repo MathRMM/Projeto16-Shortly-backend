@@ -29,7 +29,7 @@ async function selectUrlByIdController(req, res) {
     const urlId = res.locals.urlId;
 
     try {
-        const url = await selectUrlById(id);
+        const url = await selectUrlById(urlId);
         if (!url[0]) return res.sendStatus(404);
         return res.send(url);
     } catch (error) {
